@@ -22,7 +22,13 @@
         <!-- Seção de resultados, que será preenchida após a submissão do formulário -->
         <div id="result-section" style="display:none;">
             <h2>Sua Trilha Recomendada:</h2>
-            <p id="result"></p>
+            <p id="recommended-track"></p>
+            <h3>Porcentagens das Trilhas:</h3>
+            <ul>
+                <li>Ciência de Dados: <span id="perc-ciencia"></span>%</li>
+                <li>Front-End: <span id="perc-front-end"></span>%</li>
+                <li>Back-End: <span id="perc-back-end"></span>%</li>
+            </ul>
             <button id="refresh-button">Refazer Questionário</button>
         </div>
     </div>
@@ -50,33 +56,26 @@
                 const frontEnd = parseFloat(percFrontEnd);
                 const backEnd = parseFloat(percBackEnd);
 
-                // Verifica qual é a maior porcentagem e determina a trilha recomendada
-                if (ciencia > frontEnd && ciencia > backEnd) {
+                // Determina a trilha com maior porcentagem
+                let recommendedTrack = '';
+                if (ciencia >= frontEnd && ciencia >= backEnd) {
                     recommendedTrack = 'Ciência de Dados';
-                } else if (frontEnd > ciencia && frontEnd > backEnd) {
+                } else if (frontEnd >= ciencia && frontEnd >= backEnd) {
                     recommendedTrack = 'Front-End';
-                } else if (backEnd > ciencia && backEnd > frontEnd) {
-                    recommendedTrack = 'Back-End';
                 } else {
-                    // Caso de empate ou valores iguais
-                    if (ciencia === frontEnd && ciencia === backEnd) {
-                        recommendedTrack = 'Todas as Trilhas são igualmente recomendadas!';
-                    } else if (ciencia === frontEnd) {
-                        recommendedTrack = 'Ciência de Dados e Front-End';
-                    } else if (ciencia === backEnd) {
-                        recommendedTrack = 'Ciência de Dados e Back-End';
-                    } else if (frontEnd === backEnd) {
-                        recommendedTrack = 'Front-End e Back-End';
-                    }
+                    recommendedTrack = 'Back-End';
                 }
 
-                // Exibe a trilha recomendada
-                document.getElementById('result').innerHTML = `Sua trilha recomendada é: <strong>${recommendedTrack}</strong>`;
+                // Exibe a trilha recomendada e as porcentagens
+                document.getElementById('recommended-track').innerHTML = `Recomendação principal: ${recommendedTrack}`;
+                document.getElementById('perc-ciencia').innerHTML = ciencia.toFixed(2);
+                document.getElementById('perc-front-end').innerHTML = frontEnd.toFixed(2);
+                document.getElementById('perc-back-end').innerHTML = backEnd.toFixed(2);
+
                 document.getElementById('result-section').style.display = 'block'; // Mostra a seção de resultados
                 document.getElementById('instrucoes').style.display = 'none'; // Esconde a seção do formulário
             } else {
-                document.getElementById('result').innerHTML = 'Nenhuma trilha recomendada encontrada. Tente refazer o questionário.';
-                document.getElementById('result-section').style.display = 'block';
+                document.getElementById('recommended-track').innerHTML = 'Nenhuma trilha recomendada encontrada. Tente refazer o questionário.';
             }
         }
 

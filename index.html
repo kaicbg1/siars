@@ -50,22 +50,33 @@
                 const frontEnd = parseFloat(percFrontEnd);
                 const backEnd = parseFloat(percBackEnd);
 
-                // Determina a trilha com maior porcentagem
-                let recommendedTrack = '';
-                if (ciencia >= frontEnd && ciencia >= backEnd) {
+                // Verifica qual é a maior porcentagem e determina a trilha recomendada
+                if (ciencia > frontEnd && ciencia > backEnd) {
                     recommendedTrack = 'Ciência de Dados';
-                } else if (frontEnd >= ciencia && frontEnd >= backEnd) {
+                } else if (frontEnd > ciencia && frontEnd > backEnd) {
                     recommendedTrack = 'Front-End';
-                } else {
+                } else if (backEnd > ciencia && backEnd > frontEnd) {
                     recommendedTrack = 'Back-End';
+                } else {
+                    // Caso de empate ou valores iguais
+                    if (ciencia === frontEnd && ciencia === backEnd) {
+                        recommendedTrack = 'Todas as Trilhas são igualmente recomendadas!';
+                    } else if (ciencia === frontEnd) {
+                        recommendedTrack = 'Ciência de Dados e Front-End';
+                    } else if (ciencia === backEnd) {
+                        recommendedTrack = 'Ciência de Dados e Back-End';
+                    } else if (frontEnd === backEnd) {
+                        recommendedTrack = 'Front-End e Back-End';
+                    }
                 }
 
                 // Exibe a trilha recomendada
-                document.getElementById('result').innerHTML = `${recommendedTrack}`;
+                document.getElementById('result').innerHTML = `Sua trilha recomendada é: <strong>${recommendedTrack}</strong>`;
                 document.getElementById('result-section').style.display = 'block'; // Mostra a seção de resultados
                 document.getElementById('instrucoes').style.display = 'none'; // Esconde a seção do formulário
             } else {
                 document.getElementById('result').innerHTML = 'Nenhuma trilha recomendada encontrada. Tente refazer o questionário.';
+                document.getElementById('result-section').style.display = 'block';
             }
         }
 

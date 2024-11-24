@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha sua Trilha</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <img src="banner-inicio-3.svg" alt="Banner de Início" class="header-image">
+    </div>
+    <div class="container">
+        <h1>Seleção de Trilhas Adaptativas</h1>
+        <div id="instrucoes">
+            <p>Para descobrir a trilha ideal para você, clique no botão abaixo e preencha o questionário.</p>
+            <button id="form-button">Ir para o Formulário</button>
+        </div>
+        
+        <div id="result-section" style="display: none;">
+            <h2>Resultado da Trilha Recomendada</h2>
+            <p id="resultado-trilha"></p>
+            <ul>
+                <li><strong>Ciência de Dados:</strong> <span id="perc-ciencia"></span>%</li>
+                <li><strong>Front-End:</strong> <span id="perc-front-end"></span>%</li>
+                <li><strong>Back-End:</strong> <span id="perc-back-end"></span>%</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('form-button').addEventListener('click', function () {
+            // Redireciona para o formulário do Google
+            window.location.href = 'https://forms.gle/vVEKRMsFu92az3KW8'; // URL do seu formulário Google
+        });
+
+        // Captura os parâmetros da URL
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        // Verifica se as porcentagens estão presentes na URL
+        const percCiencia = urlParams.get('perc_ciencia');
+        const percFrontEnd = urlParams.get('perc_front_end');
+        const percBackEnd = urlParams.get('perc_back_end');
+
+        if (percCiencia && percFrontEnd && percBackEnd) {
+            // Exibe a seção de resultados
+            document.getElementById('instrucoes').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+
+            // Preenche os valores nas tags correspondentes
+            document.getElementById('perc-ciencia').textContent = percCiencia;
+            document.getElementById('perc-front-end').textContent = percFrontEnd;
+            document.getElementById('perc-back-end').textContent = percBackEnd;
+
+            // Determina a trilha com a maior porcentagem
+            let trilhaRecomendada = 'Ciência de Dados';
+            let maiorPorcentagem = parseFloat(percCiencia);
+
+            if (parseFloat(percFrontEnd) > maiorPorcentagem) {
+                trilhaRecomendada = 'Front-End';
+                maiorPorcentagem = parseFloat(percFrontEnd);
+            }
+
+            if (parseFloat(percBackEnd) > maiorPorcentagem) {
+                trilhaRecomendada = 'Back-End';
+            }
+
+            // Exibe a trilha recomendada
+            document.getElementById('resultado-trilha').textContent = `Com base nas suas respostas, recomendamos seguir a trilha de ${trilhaRecomendada}.`;
+        }
+    </script>
+</body>
+</html>
